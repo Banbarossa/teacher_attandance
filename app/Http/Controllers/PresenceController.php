@@ -8,6 +8,7 @@ use App\Models\Schedule;
 use App\Models\Teacher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Env;
 
 class PresenceController extends Controller
 {
@@ -50,8 +51,10 @@ class PresenceController extends Controller
         // Menghitung jarak menggunakan formula Haversine
         $userLatitude = $request->latitude;
         $userLongitude = $request->longitude;
-        $allowedLatitude = 5.464579845613735;
-        $allowedLongitude = 95.38644196930774;
+        // $allowedLatitude = 5.464579845613735;
+        // $allowedLongitude = 95.38644196930774;
+        $allowedLatitude = env('LATITUDE');
+        $allowedLongitude = env('LONGITUDE');
         $earthRadius = 6371; // Radius bumi dalam kilometer
 
         $latDiff = deg2rad($allowedLatitude - $userLatitude);
@@ -64,7 +67,8 @@ class PresenceController extends Controller
 
         $distance = $earthRadius * $c; // Jarak dalam kilometer
 
-        $allowedRadius = 1; // Radius yang diizinkan dalam kilometer
+        // $allowedRadius = 1; // Radius yang diizinkan dalam kilometer
+        $allowedRadius = env('JARAK');
         if ($distance > $allowedRadius) {
             return back()->with('error', 'Anda berada di luar radius yang diizinkan');
         }
@@ -77,6 +81,7 @@ class PresenceController extends Controller
             'tanggal' => Carbon::now()->toDateString(),
             'waktu' => Carbon::now(),
             'terlambat' => $keterlambatan,
+            'status' => 'H',
         ]);
 
         return redirect('/')->with('success', 'Absen Anda Telah Direcord');

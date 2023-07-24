@@ -62,9 +62,11 @@
                                   <h1>
                                     Hello {{ucFirst(Auth::user()->name)}}
                                       <div class="dropdown d-inline">
-                                        <a class=" dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{-- <a class=" dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         </a>
                                       
+
+                                        @can('isAdmin')
                                         <ul class="dropdown-menu">
                                           <li><!-- Button trigger modal -->
                                             <a href="" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop"> Show Profile</a>
@@ -73,6 +75,8 @@
                                           </li>
 
                                         </ul>
+                                        @endcan --}}
+                                       
                                       </div>
                                   </h1>
                                   <p>Selamat datang di Aplikasi Absensi tenaga Pengajar di Pesantren Imam Syafi'i</p>

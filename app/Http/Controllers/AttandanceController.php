@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Presence;
+use App\Models\Rombel;
+use App\Models\Schedule;
+use App\Models\Teacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttandanceController extends Controller
@@ -21,7 +25,13 @@ class AttandanceController extends Controller
      */
     public function create()
     {
-        //
+        $data['guru'] = Teacher::orderBy('nama', 'asc')->get();
+        $data['schedule'] = Schedule::orderBy('jam_ke', 'asc')->get();
+        $data['rombel'] = Rombel::orderBy('tingkat_kelas', 'asc')->get();
+        $data['user'] = new Presence();
+        $data['method'] = 'post';
+        $data['route'] = route('attandance.store');
+        return view('piket.create', compact('data'));
     }
 
     /**
@@ -29,7 +39,25 @@ class AttandanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'teacher_id' => 'required',
+            'schedule_id' => 'required',
+            'rombel_id' => 'required',
+            'jumlah_jam' => 'required',
+            'status' => 'required',
+        ]);
+
+        Presence::create([
+            'teacher_id' => $request->teacher_id,
+            'schedule_id' => $request->schedule_id,
+            'rombel_id' => $request->rombel_id,
+            'jumlah_jam' => $request->jumlah_jam,
+            'tanggal' => Carbon::now()->toDateString(),
+            'status' => $request->status,
+            'keterangan' => $request->keterangan,
+        ]);
+
+        return redirect()->route('report.harian')->with('success', 'Data Berhasil ditambahkan');
     }
 
     /**

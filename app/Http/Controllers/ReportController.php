@@ -17,6 +17,7 @@ class ReportController extends Controller
     {
         $teacher = Teacher::findOrFail($request->teacher_id);
         $presence = Presence::where('teacher_id', $request->teacher_id)
+        // ->where('status', 'H')
             ->whereYear('tanggal', $request->year)
             ->whereMonth('tanggal', $request->month)
             ->with('rombel', 'schedule')

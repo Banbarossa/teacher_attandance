@@ -30,6 +30,7 @@ class RombelTable extends DataTableComponent
             Column::make('Action')
                 ->label(
                     function ($row, Column $column) {
+                        $route['show'] = Route('rombel.show', $row);
                         $route['edit'] = Route('rombel.edit', $row);
                         $route['delete'] = Route('rombel.destroy', $row);
                         return view('components.delete-item', ['route' => $route]);

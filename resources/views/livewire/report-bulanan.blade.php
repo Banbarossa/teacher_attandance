@@ -54,6 +54,7 @@
                            <th>Jumlah Jam</th>
                            <th>Waktu Absensi</th>
                            <th>Terlambat</th>
+                           <th>Status</th>
                        </tr>
                    </thead>
                    <tbody>
@@ -67,6 +68,7 @@
                            <td>{{ $presence->jumlah_jam }}</td>
                            <td>{{ $presence->waktu }}</td>
                            <td>{{ $presence->terlambat }} Menit</td>
+                           <td>{{ $presence->status }} Menit</td>
                        </tr>
                        @endforeach
                    </tbody>

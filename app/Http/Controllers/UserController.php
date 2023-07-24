@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -31,7 +32,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $this->validate($request, [
+            'name' => 'required|min:4',
+            'email' => 'required|email',
+            'role' => 'required',
+            'password' => 'required|min:8|same:password_confirmation',
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('user.index')->with('success', 'Data berhasil ditambahkan');
     }
 
     /**
@@ -49,7 +65,7 @@ class UserController extends Controller
     {
         $user = User::findOrfail($id);
 
-        $data['route'] = route('teacher.update', $id);
+        $data['route'] = route('user.update', $id);
         $data['user'] = $user;
         $data['method'] = 'put';
 
@@ -61,7 +77,23 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $this->validate($request, [
+            'name' => 'required|min:4',
+            'email' => 'required|email',
+            'role' => 'required',
+            'password' => 'required|min:8|same:password_confirmation',
+        ]);
+
+        $data = User::findOrFail($id);
+        $data->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('user.index')->with('success', 'Data berhasil diubah');
     }
 
     /**

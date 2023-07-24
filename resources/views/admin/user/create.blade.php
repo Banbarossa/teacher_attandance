@@ -34,7 +34,7 @@
 
                         <div class="mb-3">
                            <label for="email" class="form-label">email</label>
-                           <input type="email" class="form-control @error('email') is-invalid @enderror" nama="email" id="email" aria-describedby="helpId" placeholder="email" value="{{old('email',$data['user']->email)}}">
+                           <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" aria-describedby="helpId" placeholder="email" value="{{old('email',$data['user']->email)}}"s>
                             @error('email')
                             <div class="invalid-feedback">
                                {{$message}}
@@ -43,10 +43,10 @@
                         </div>
                         <div class="mb-3">
                            <label for="role" class="form-label">Role</label>
-                           <select name="roler" id="role" class="form-select">
+                           <select name="role" id="role" class="form-select">
                               <option value="">Pilih Role</option>
-                              <option value="admin">admin</option>
-                              <option value="piket">Petugast Piket</option>
+                              <option value="admin" @if ($data['user']->role == 'admin') selected @endif>admin</option>
+                              <option value="piket" @if ($data['user']->role == 'piket') selected @endif>Petugast Piket</option>
                               
                            </select>
                             @error('role')
@@ -55,9 +55,10 @@
                             </div>
                             @enderror
                         </div>
+
                         <div class="mb-3">
                            <label for="password" class="form-label">Password</label>
-                           <input type="text" class="form-control @error('password') is-invalid @enderror" nama="password" id="password" aria-describedby="helpId" placeholder="Password" value="{{old('password',$data['user']->password)}}">
+                           <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" id="password" aria-describedby="helpId" placeholder="Password">
                             @error('password')
                             <div class="invalid-feedback">
                                {{$message}}
@@ -66,7 +67,7 @@
                         </div>
                         <div class="mb-3">
                            <label for="password_confirmation" class="form-label">Password Confirmation</label>
-                           <input type="text" class="form-control @error('password_confirmation') is-invalid @enderror" nama="password_confirmation" id="password_confirmation" aria-describedby="helpId" placeholder="Password Confirmation" value="{{old('password_confirmation',$data['user']->password_confirmation)}}">
+                           <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" id="password_confirmation" aria-describedby="helpId" placeholder="Password Confirmation" >
                             @error('password_confirmation')
                             <div class="invalid-feedback">
                                {{$message}}

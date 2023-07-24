@@ -49,7 +49,8 @@
                             <th>Nomor</th>
                             <th>Nama Guru</th>
                             <th>Jumlah Hari Hadir</th>
-                            <th>Total Jam</th>
+                            <th>Jam Hadir</th>
+                            <th>Jam Tidak Hadir</th>
                             <th>Total terlambat</th>
                             <th>view detail</th>
                        </tr>
@@ -60,7 +61,8 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $teacher->teacher->nama }}</td>
                             <td>{{ $teacher->jumlah_tanggal }}</td>
-                            <td>{{ $teacher->total_jam }}</td>
+                            <td>{{ $teacher->jam_hadir}}</td>
+                            <td>{{ $teacher->jam_tidak_hadir}}</td>
                             <td>{{ $teacher->total_terlambat }} menit</td>
                             <td>
                                 <form action="{{route('report.show')}}" method="post">

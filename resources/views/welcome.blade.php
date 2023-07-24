@@ -31,6 +31,23 @@
         .text-maroon{
             color: maroon;
         }
+        .container{
+            position: relative;
+        }
+
+        .container::before{
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+            background-repeat: none;
+            backdrop-filter: ;
+            background-size: 50%;
+            /* background: url({{asset('assets/images/wp.png')}}); */
+            
+        }
 
     </style>
 </head>
@@ -40,6 +57,8 @@
             <div class="col-12 col-lg-8 text-center {{session()->has('success') ? 'd-none' : ''}}">
                 <img src="{{asset('assets/images/logo.png')}}" alt="" class="thumbnail">
                 <h1 class="title">Absensi Pesantren Imam Syafii</h1>
+                <p class="mt-4"> Anda admin ?</p>
+                <a href="{{route('login')}}" class="btn btn-primary">Login di sini</a>
             </div>
 
             @if (session()->has('success'))

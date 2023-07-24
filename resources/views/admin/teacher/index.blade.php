@@ -33,9 +33,9 @@
        <div class="card">
           <div class="card-header d-flex justify-content-between">
              <div class="header-title">
-                <h4 class="card-title">Daftar tenaga Pengajar</h4>
+                <h4 class="card-title">Daftar Tenaga Pengajar</h4>
             </div>
-            <a href="{{route('teacher.create')}}" class="btn btn-primary">Tambah Rombel</a>
+            <a href="{{route('teacher.create')}}" class="btn btn-primary">Tambah data</a>
           </div>
           <div class="card-body">
             <livewire:teachers-table/>

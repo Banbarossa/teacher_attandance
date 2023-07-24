@@ -34,11 +34,11 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
-    Route::resource('rombel', RombelController::class);
-    Route::resource('schedule', ScheduleController::class);
-    Route::resource('teacher', TeacherController::class);
+    Route::resource('rombel', RombelController::class)->middleware('can:isAdmin');
+    Route::resource('schedule', ScheduleController::class)->middleware('can:isAdmin');
+    Route::resource('teacher', TeacherController::class)->middleware('can:isAdmin');
     Route::resource('attandance', AttandanceController::class);
-    Route::resource('user', UserController::class);
+    Route::resource('user', UserController::class)->middleware('can:isAdmin');
 
     // report
     Route::get('/report/bulanan', [ReportController::class, 'report'])->name('report.bulanan');
@@ -56,11 +56,12 @@ Route::middleware('auth')->group(function () {
 
 });
 
-// // congrate
-// Route::get('congrat', function () {
-//     return view('congrat');
-// });
-
 // Persense Controller
 Route::get('/absen/{id}', [PresenceController::class, 'index'])->name('presence.index');
 Route::post('/absen/{id}', [PresenceController::class, 'store'])->name('presence.store');
+
+// Route::get('/abc', function () {
+
+//     $schedules = Schedule::orderBy('jam_ke', 'asc')->get();
+//     return view('absensi', ['data' => 'gfahdgjagdhgajda', 'schedules' => $schedules]);
+// });

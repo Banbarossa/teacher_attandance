@@ -14,9 +14,10 @@
  
      <div class="col-sm-12">
         <div class="card">
-           <div class="card-header d-flex justify-content-between">
-              <div class="header-title">
+           <div class="card-header">
+              <div class="header-title d-flex justify-content-between">
                  <h4 class="card-title">Daftar Kehadiran</h4>
+                 <a href="{{route('attandance.create')}}" class="btn btn-primary">Tambah Guru Tidak Hadir</a>
              </div>
            </div>
            <div class="card-body">
@@ -47,9 +48,24 @@
                             <th>Waktu Absensi</th>
                             <th>
                                 <button wire:click="sortBy('terlambat')" class="bg-transparent d-flex justify-content-between" style="border: 0pt">
-                                    <span class="text-muted">terlambat</span>
+                                    <span class="text-muted">Terlambat</span>
                                     <span>
                                         @if ($sortBy === 'terlambat')
+                                            @if ($sortDirection === 'asc')
+                                                <i class="fa fa-caret-up"></i>
+                                            @else
+                                                <i class="fa fa-caret-down"></i>
+                                            @endif
+                                        @endif
+                                    </span>
+                                    
+                                </button>
+                            </th>
+                            <th>
+                                <button wire:click="sortBy('status')" class="bg-transparent d-flex justify-content-between" style="border: 0pt">
+                                    <span class="text-muted">Status</span>
+                                    <span>
+                                        @if ($sortBy === 'status')
                                             @if ($sortDirection === 'asc')
                                                 <i class="fa fa-caret-up"></i>
                                             @else
@@ -71,7 +87,8 @@
                             <td>{{ $presence->schedule->jam_ke }}</td>
                             <td>{{ $presence->jumlah_jam }}</td>
                             <td>{{ $presence->waktu }}</td>
-                            <td>{{ $presence->terlambat }} Menit</td>
+                            <td>{{ $presence->terlambat }}{{$presence->terlambat ? ' Menit':''}}</td>
+                            <td>{{ $presence->status }}</td>
 
                        </tr>
                        @endforeach

@@ -49,7 +49,10 @@ class RombelController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Rombel::find($id);
+
+        return view('admin.rombel.view', ['data' => $data]);
+
     }
 
     /**

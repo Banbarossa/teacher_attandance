@@ -87,6 +87,7 @@
                                        <input type="password" class="form-control" name="password" id="password" aria-describedby="password" placeholder=" ">
                                     </div>
                                  </div>
+
                                  {{-- <div class="col-lg-12 d-flex justify-content-between">
                                     <div class="form-check mb-3">
                                        <input type="checkbox" class="form-check-input" id="customCheck1">
