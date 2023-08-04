@@ -74,7 +74,8 @@
                                         </x-alert>
                                     </div>
                                 </div>
-                            @endif
+                            @endif                       
+                        </div>
 
 
                             <a href="https://pis.sch.id/">
@@ -133,7 +134,7 @@
 
                                 {{-- Jumlah jam --}}
                                 @php
-                                    $jumlah_jam=[1,2,3,4]
+                                    $jumlah_jam=[2,4,6]
 
                                 @endphp
 

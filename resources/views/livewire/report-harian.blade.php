@@ -76,6 +76,10 @@
                                     
                                 </button>
                             </th>
+                            @can('isAdmin')
+                            <th>Action</th>
+                                
+                            @endcan
                        </tr>
                    </thead>
                    <tbody>
@@ -89,6 +93,18 @@
                             <td>{{ $presence->waktu }}</td>
                             <td>{{ $presence->terlambat }}{{$presence->terlambat ? ' Menit':''}}</td>
                             <td>{{ $presence->status }}</td>
+                            @can('isAdmin')
+                            <td>
+                                <form action="{{ route('presences.destroy', $presence->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data presences ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </form>
+                            </td>
+                            @endcan
+                            
+                                
+                            
 
                        </tr>
                        @endforeach

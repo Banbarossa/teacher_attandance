@@ -45,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/report/harian', [ReportController::class, 'report'])->name('report.harian');
     Route::get('/report/summary', [ReportController::class, 'report'])->name('report.summary');
     Route::post('/report/summary', [ReportController::class, 'show'])->name('report.show');
+    Route::post('/personal-report', [ReportController::class, 'exportExcel'])->name('exportExcel');
+    Route::delete('/presences/{id}', [ReportController::class, 'destroy'])->name('presences.destroy');
 
     // profile update (personal)
     Route::post('profile', [ProfileController::class, 'profileUpdate'])->name('profile.update');

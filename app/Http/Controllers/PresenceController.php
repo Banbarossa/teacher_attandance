@@ -38,7 +38,7 @@ class PresenceController extends Controller
         $waktu_sekarang = Carbon::now();
         $waktu_masuk = Carbon::createFromFormat('H:i:s', $jam_masuk);
 
-        $keterlambatan = '';
+        $keterlambatan = 0;
         if ($waktu_sekarang->gt($waktu_masuk)) {
             $keterlambatan = $waktu_sekarang->diffInMinutes($waktu_masuk);
         }
@@ -51,8 +51,7 @@ class PresenceController extends Controller
         // Menghitung jarak menggunakan formula Haversine
         $userLatitude = $request->latitude;
         $userLongitude = $request->longitude;
-        // $allowedLatitude = 5.464579845613735;
-        // $allowedLongitude = 95.38644196930774;
+
         $allowedLatitude = env('LATITUDE');
         $allowedLongitude = env('LONGITUDE');
         $earthRadius = 6371; // Radius bumi dalam kilometer
@@ -69,22 +68,31 @@ class PresenceController extends Controller
 
         // $allowedRadius = 1; // Radius yang diizinkan dalam kilometer
         $allowedRadius = env('JARAK');
-        if ($distance > $allowedRadius) {
-            return back()->with('error', 'Anda berada di luar radius yang diizinkan');
+        // if ($distance > $allowedRadius) {
+        //     return back()->with('error', 'Anda berada di luar radius yang diizinkan');
+        // }
+
+        $validasi = $id . '-' . $request->schedule . '-' . $teacher->id . '-' . Carbon::now()->toDateString();
+        $presence = Presence::where('validasi', $validasi)->first();
+
+        if ($presence) {
+            return back()->with('error', 'Anda Sudah Melakukan Absen di kelas ini');
+        } else {
+
+            Presence::create([
+                'teacher_id' => $teacher->id,
+                'schedule_id' => $request->schedule,
+                'rombel_id' => $id,
+                'jumlah_jam' => $request->jumlah_jam,
+                'tanggal' => Carbon::now()->toDateString(),
+                'waktu' => Carbon::now()->format('H:i:s'),
+                'terlambat' => $keterlambatan,
+                // validasi= rombel-jamKe-idGuru-tanggal
+                'validasi' => $id . '-' . $request->schedule . '-' . $teacher->id . '-' . Carbon::now()->toDateString(),
+                'status' => 'H',
+            ]);
+
+            return redirect('/')->with('success', 'Absen Anda Telah Direcord');
         }
-
-        Presence::create([
-            'teacher_id' => $teacher->id,
-            'schedule_id' => $request->schedule,
-            'rombel_id' => $id,
-            'jumlah_jam' => $request->jumlah_jam,
-            'tanggal' => Carbon::now()->toDateString(),
-            'waktu' => Carbon::now(),
-            'terlambat' => $keterlambatan,
-            'status' => 'H',
-        ]);
-
-        return redirect('/')->with('success', 'Absen Anda Telah Direcord');
-
     }
 }

@@ -52,7 +52,7 @@
                             <th>Jam Hadir</th>
                             <th>Jam Tidak Hadir</th>
                             <th>Total terlambat</th>
-                            <th>view detail</th>
+                            <th>Action</th>
                        </tr>
                    </thead>
                    <tbody>
@@ -64,13 +64,20 @@
                             <td>{{ $teacher->jam_hadir}}</td>
                             <td>{{ $teacher->jam_tidak_hadir}}</td>
                             <td>{{ $teacher->total_terlambat }} menit</td>
-                            <td>
+                            <td class="d-flex gap-2">
+                                <form action="{{route('exportExcel')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="teacher_id" value="{{$teacher->teacher_id}}">
+                                    <input type="hidden" name="month" value="{{$month}}">
+                                    <input type="hidden" name="year" value="{{$year}}">
+                                    <button type="submit" class="btn btn-outline-info d-inline">Excel</button>
+                                </form>
                                 <form action="{{route('report.show')}}" method="post">
                                     @csrf
                                     <input type="hidden" name="teacher_id" value="{{$teacher->teacher_id}}">
                                     <input type="hidden" name="month" value="{{$month}}">
                                     <input type="hidden" name="year" value="{{$year}}">
-                                    <button type="submit" class="btn btn-outline-info d-block">View Detail</button>
+                                    <button type="submit" class="btn btn-outline-info d-inline">Detail</button>
                                 </form>
                             </td>
                         </tr>

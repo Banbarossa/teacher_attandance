@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PersonalReportExport;
 use App\Models\Presence;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -24,5 +26,28 @@ class ReportController extends Controller
             ->paginate(20);
 
         return view('admin.report.show', compact('teacher', 'presence'));
+    }
+
+    public function destroy($id)
+    {
+        $presence = Presence::find($id);
+
+        if ($presence) {
+            $presence->delete();
+            return redirect()->route('report.harian')->with('success', 'Data presences berhasil dihapus!');
+        }
+
+        return redirect()->route('report.harian')->with('error', 'Data presences tidak ditemukan!');
+    }
+
+    public function exportExcel(Request $request)
+    {
+
+        // dd($request->all());
+        $data['id'] = $request->teacher_id;
+        $data['month'] = $request->month;
+        $data['year'] = $request->year;
+        return Excel::download(new PersonalReportExport($data), 'report.xlsx');
+
     }
 }
