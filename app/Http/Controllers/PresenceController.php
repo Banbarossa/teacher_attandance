@@ -39,15 +39,15 @@ class PresenceController extends Controller
         if ($waktu_sekarang->isMonday()) {
             $jam_masuk = Schedule::where('jam_ke', $request->schedule)
                 ->where('hari', 'senin')
-                ->first();
+                ->first()->jam_masuk;
         } elseif ($waktu_sekarang->isFriday()) {
             $jam_masuk = Schedule::where('jam_ke', $request->schedule)
                 ->where('hari', 'jumat')
-                ->first();
+                ->first()->jam_masuk;
         } else {
             $jam_masuk = Schedule::where('jam_ke', $request->schedule)
-                ->where('hari', 'jumat')
-                ->first();
+                ->where('hari', 'lain')
+                ->first()->jam_masuk;
         }
 
         $waktu_masuk = Carbon::createFromFormat('H:i:s', $jam_masuk);
