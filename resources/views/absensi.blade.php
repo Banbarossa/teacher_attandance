@@ -47,7 +47,7 @@
     </div>
     <!-- loader END -->
 
-    <div class="wrapper">
+    <div class="wrapper px-2">
 
         <section class="login-content">
 
@@ -56,7 +56,7 @@
                 <div class="col-md-6 p-0">
 
                     <div class="card shadow-lg d-flex justify-content-center mb-0">
-                        <div class="card-body p-5">
+                        <div class="card-body py-5">
                             @if(session()->has('success'))
                                 <div class="row">
                                     <div class="col-12">
@@ -75,17 +75,20 @@
                                     </div>
                                 </div>
                             @endif                       
-                        </div>
+                        
 
 
                             <a href="https://pis.sch.id/">
-                                <div>
+                                <div class="d-flex align-items-center gap-4">
                                     <img src="{{ asset('assets/images/logo.png') }}" alt=""
                                         class="rounded avatar-80 mb-3">
+                                        <h1 class="text-success">Absen</h1>
                                 </div>
                             </a>
 
-                            <p class="text-success mb-5">Silahkan Masukkan Password Untuk Absensi.</p>
+                            <!--<p class="text-success mb-5">Silahkan Masukkan Password Untuk Absensi.</p>-->
+                            <p class="text-danger mb-5">Jangan Lupa mengaktifkan GPS pada perangkat anda</p>
+                            <hr/>
 
 
                             <form action="{{ route('presence.store',$data) }}" method="post">
@@ -113,48 +116,26 @@
                                 </div>
 
                                 {{-- jam Ke --}}
-                                <div class="form-group mb-5">
-                                    <label for="" class="form-label d-block">Jam ke</label>
-                                    @foreach($schedules as $item)
-                                        <div class="form-check form-check-inline me-4">
-                                            <input class="form-check-input" type="radio" name="schedule"
-                                                id="{{$item->id}}" value="{{ $item->id }}">
-                                            <label class="form-check-label" for="{{$item->id}}">
-                                                {{ $item->jam_ke }}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                    @error('schedule')
-                                        <div class="col-lg-12">
-                                            <small class="text-danger">{{ $message }}</small>
-                                        </div>
-                                    @enderror
 
-                                </div>
-
-                                {{-- Jumlah jam --}}
                                 @php
-                                    $jumlah_jam=[2,4,6]
-
+                                use Carbon\Carbon;
+                                $today = Carbon::now();
+                                $current_time = now()->format('H:i');
                                 @endphp
 
-                                <div class="form-group mb-4">
-                                    <label for="" class="form-label d-block">Jumlah Jam</label>
-                                    @foreach ($jumlah_jam as $item)
-                                    <div class="form-check form-check-inline me-4">
-                                        <input class="form-check-input" type="radio" name="jumlah_jam"
-                                            id="{{$item}}" value="{{$item}}">
-                                        <label class="form-check-label" for="{{$item}}">
-                                            {{$item}}
-                                        </label>
-                                    </div>
-                                    @endforeach
 
-                                    @error('jumlah_jam')
-                                        <div class="col-lg-12">
-                                            <small class="text-danger">{{ $message }}</small>
-                                        </div>
-                                    @enderror
+
+                                @if ($today->isMonday())
+                                    @include('isMonday')
+                                @elseif ($today->isFriday())
+                                    @include('isFriday')
+                                @else
+                                    @include('elseDay')
+                                    
+                                @endif
+                               
+
+
 
 
                                     <!--latitudo-->
@@ -171,12 +152,15 @@
                                         </div>
                                     </div>
 
+
                                     <div class="mt-4 d-grid">
                                         <button type="submit" class="btn btn-outline-info rounded-pill">Absen
                                             Sekarang</button>
-
                                     </div>
+
                             </form>
+                        
+                        </div>
 
 
 

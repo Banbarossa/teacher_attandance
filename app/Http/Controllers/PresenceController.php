@@ -12,6 +12,7 @@ use Illuminate\Support\Env;
 
 class PresenceController extends Controller
 {
+
     public function index($id)
     {
 
@@ -28,17 +29,31 @@ class PresenceController extends Controller
 
         $request->validate([
             'password' => 'required|exists:teachers,peg_id',
-            'jumlah_jam' => 'required',
+            'schedule' => 'required',
         ]);
 
         $teacher = Teacher::where('peg_id', $request->password)->first();
 
-        $jam_masuk = Schedule::where('id', $request->schedule)->first()->jam_masuk;
-
         $waktu_sekarang = Carbon::now();
+
+        if ($waktu_sekarang->isMonday()) {
+            $jam_masuk = Schedule::where('jam_ke', $request->schedule)
+                ->where('hari', 'senin')
+                ->first();
+        } elseif ($waktu_sekarang->isFriday()) {
+            $jam_masuk = Schedule::where('jam_ke', $request->schedule)
+                ->where('hari', 'jumat')
+                ->first();
+        } else {
+            $jam_masuk = Schedule::where('jam_ke', $request->schedule)
+                ->where('hari', 'jumat')
+                ->first();
+        }
+
         $waktu_masuk = Carbon::createFromFormat('H:i:s', $jam_masuk);
 
         $keterlambatan = 0;
+
         if ($waktu_sekarang->gt($waktu_masuk)) {
             $keterlambatan = $waktu_sekarang->diffInMinutes($waktu_masuk);
         }
@@ -66,14 +81,14 @@ class PresenceController extends Controller
 
         $distance = $earthRadius * $c; // Jarak dalam kilometer
 
-        // $allowedRadius = 1; // Radius yang diizinkan dalam kilometer
         $allowedRadius = env('JARAK');
-        // if ($distance > $allowedRadius) {
-        //     return back()->with('error', 'Anda berada di luar radius yang diizinkan');
-        // }
+        if ($distance > $allowedRadius) {
+            return back()->with('error', 'Anda berada di luar radius yang diizinkan');
+        }
 
         $validasi = $id . '-' . $request->schedule . '-' . $teacher->id . '-' . Carbon::now()->toDateString();
         $presence = Presence::where('validasi', $validasi)->first();
+        $schedule_id = Schedule::where('jam_ke', $request->schedule)->first();
 
         if ($presence) {
             return back()->with('error', 'Anda Sudah Melakukan Absen di kelas ini');
@@ -81,14 +96,14 @@ class PresenceController extends Controller
 
             Presence::create([
                 'teacher_id' => $teacher->id,
-                'schedule_id' => $request->schedule,
+                'schedule_id' => $schedule_id->id,
                 'rombel_id' => $id,
-                'jumlah_jam' => $request->jumlah_jam,
+                'jumlah_jam' => 2,
                 'tanggal' => Carbon::now()->toDateString(),
                 'waktu' => Carbon::now()->format('H:i:s'),
                 'terlambat' => $keterlambatan,
                 // validasi= rombel-jamKe-idGuru-tanggal
-                'validasi' => $id . '-' . $request->schedule . '-' . $teacher->id . '-' . Carbon::now()->toDateString(),
+                'validasi' => $validasi,
                 'status' => 'H',
             ]);
 

@@ -35,8 +35,9 @@ class ScheduleController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'jam_ke' => 'required|numeric|digits_between:1,9|unique:schedules,jam_ke',
+            'jam_ke' => 'required|numeric|digits_between:1,9',
             'jam_masuk' => 'required',
+            'hari' => 'required',
         ]);
 
         Schedule::create($validatedData);
@@ -75,6 +76,7 @@ class ScheduleController extends Controller
         $validatedData = $request->validate([
             'jam_ke' => 'required|numeric|digits_between:1,9',
             'jam_masuk' => 'required',
+            'hari' => 'required',
         ]);
 
         Schedule::findOrFail($schedule->id)->update($validatedData);

@@ -21,6 +21,16 @@
                         @endif
                         @csrf
 
+                        <div class="mb-3">
+                           <label for="hari" class="form-label">Hari</label>
+                           <input type="text" class="form-control @error('hari') is-invalid @enderror" name="hari" id="hari" aria-describedby="helpId" placeholder="hari" value="{{old('hari',$data['schedule']->hari)}}">
+                              @error('hari')
+                              <div class="invalid-feedback">
+                                 {{$message}}
+                              </div>
+                              @enderror
+                        </div>
+
 
 
 
@@ -46,14 +56,14 @@
                          </div>
 
                           <div class="mb-3">
-                          <label for="jam_masuk" class="form-label">jam Masuk</label>
-                          <input type="time" class="form-control @error('jam_masuk') is-invalid @enderror" name="jam_masuk" id="jam_masuk" aria-describedby="helpId" placeholder="Jam masuk" value="{{old('jam_masuk',$data['schedule']->jam_masuk)}}">
-                           @error('jam_masuk')
-                           <div class="invalid-feedback">
-                              {{$message}}
+                              <label for="jam_masuk" class="form-label">jam Masuk</label>
+                              <input type="time" class="form-control @error('jam_masuk') is-invalid @enderror" name="jam_masuk" id="jam_masuk" aria-describedby="helpId" placeholder="Jam masuk" value="{{old('jam_masuk',$data['schedule']->jam_masuk)}}">
+                                 @error('jam_masuk')
+                                 <div class="invalid-feedback">
+                                    {{$message}}
+                                 </div>
+                                 @enderror
                            </div>
-                           @enderror
-                        </div>
 
 
                         <div class="mt-4">
